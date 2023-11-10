@@ -1,7 +1,6 @@
 const GrandParent = require("../models/GrandParents");
 const Parent = require("../models/Parents");
-const Son = require("../models/Sons");
-const Daughter = require("../models/Daughters");
+const Children = require("../models/Children");
 
 exports.hello = (req, res) => {
   res.json("hello");
@@ -13,8 +12,8 @@ exports.getGrandParents = async (req, res) => {
 };
 
 exports.addGrandParents = async (req, res) => {
-  const { name, firstWifeName, secondWifeName, sons, daughters } = req.body;
-  GrandParent.create({ name, firstWifeName, secondWifeName, sons, daughters })
+  const { name, firstWifeName, secondWifeName, children } = req.body;
+  GrandParent.create({ name, firstWifeName, secondWifeName, children })
     .then((doc) => {
       res.json(doc);
     })
@@ -24,21 +23,18 @@ exports.addGrandParents = async (req, res) => {
 };
 
 exports.getParents = async (req, res) => {
-  const Parents = await Parent.find().populate("parentName");
-
-  res.json(Parents);
+  const parentData = await Parent.findOne().populate("parentName");
+  res.json(parentData);
 };
 
 exports.addParents = async (req, res) => {
-  const { name, firstWifeName, secondWifeName, sons, daughters } = req.body;
-
+  const { name, firstWifeName, secondWifeName, children } = req.body;
   Parent.create({
     name,
     firstWifeName,
     secondWifeName,
-    sons,
-    daughters,
-    parentName: "654d17d85813cab641cf964e",
+    children,
+    parentName: "654e36133a6e80be76309a99",
   })
     .then((doc) => {
       res.json(doc);
@@ -48,23 +44,25 @@ exports.addParents = async (req, res) => {
     });
 };
 
-exports.getSons = async (req, res) => {
-  const Sons = await Son.find().populate("parentName");
+exports.getChildren = async (req, res) => {
+  const children = await Children.find()
+    .populate("parentName")
+    .populate("grandParentName");
 
-  res.json(Sons);
+  res.json(children);
 };
 
-exports.addSons = async (req, res) => {
-  const { parent, name, wifeName, sons, daughters } = req.body;
+exports.addChildren = async (req, res) => {
+  const { parent, name, wifeName, children } = req.body;
 
   const parentData = await Parent.findOne({ name: "parent 1" });
 
-  Son.create({
+  Children.create({
     name,
     wifeName,
-    sons,
-    daughters,
-    parentName: "654d1db763798be7f7d64b8a",
+    children,
+    parentName: "654e3c61de38be65725eb2fd",
+    grandParentName: "654e36133a6e80be76309a99",
   })
     .then((doc) => {
       res.json(doc);

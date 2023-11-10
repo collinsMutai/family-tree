@@ -13,8 +13,8 @@ router.get("/parents", FamilyController.getParents);
 
 router.post("/parents", FamilyController.addParents);
 
-router.get("/sons", FamilyController.getSons);
+router.get("/children", FamilyController.getChildren);
 
-router.post("/sons", FamilyController.addSons);
+router.post("/children", FamilyController.addChildren);
 
 module.exports = router;

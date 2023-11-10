@@ -5,8 +5,7 @@ const GrandParentsSchema = new Schema({
   name: { type: String, required: true },
   firstWifeName: { type: String },
   secondWifeName: { type: String},
-  sons: { type: Array },
-  daughters: { type: Array },
+  children: { type: Array }
   
 });
 

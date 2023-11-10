@@ -3,11 +3,10 @@ const { Schema } = mongoose;
 
 const ParentsSchema = new Schema({
   parentName: { type: mongoose.Schema.Types.ObjectId, ref: "GrandParents" },
-  name: {type: String},
+  name: { type: String, required: true },
   firstWifeName: { type: String },
   secondWifeName: { type: String },
-  sons: { type: Array },
-  daughters: { type: Array },
+  children: { type: Array },
 });
 
 module.exports = mongoose.model("Parents", ParentsSchema);
