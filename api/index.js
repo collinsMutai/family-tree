@@ -21,9 +21,21 @@ app.use("/uploads", express.static(__dirname + "/uploads"))
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: "*",
   })
 );
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+  );
+  next();
+});
 
 app.use(familyRoutes)
 
