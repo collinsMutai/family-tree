@@ -69,6 +69,7 @@ const GrandParent = () => {
     });
     setChild("");
   }
+
   return (
     <>
       {display && (
@@ -143,10 +144,12 @@ const GrandParent = () => {
               ))}
           </div>
           <div className="flex justify-between">
-            <button  className="primary my-4">
-              Save
-            </button>
-            <button  onClick={()=> setDisplay(false)} type="button"  className="primary my-4">
+            <button className="primary my-4">Save</button>
+            <button
+              onClick={() => setDisplay(false)}
+              type="button"
+              className="primary my-4"
+            >
               Cancel
             </button>
           </div>
@@ -154,7 +157,7 @@ const GrandParent = () => {
       )}
       {grandparent && (
         <div className=" mt-8 p-8">
-          <h1 className="text-2xl bold mb-8">Grandparents</h1>
+          <h1 className="text-2xl bold mb-8">Grandparents: Kiptule Family</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
             <div>
               <img
@@ -187,32 +190,66 @@ const GrandParent = () => {
             <p className="text-lg">
               They were blessed with {addedChildren?.length} of children.
             </p>
-            {addedChildren &&
-              addedChildren.map((child) => (
-                <div className="mt-4" key={child}>
-                  <ul>
-                    <div className="flex gap-1 align-center content-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+            <div className="flex mt-8">
+              <div className="flex-1">
+                <h2 className="text-xl">First House Children</h2>
+                {addedChildren &&
+                  addedChildren.slice(0, 7).map((child) => (
+                    <div className="mt-4" key={child}>
+                      <ul>
+                        <div className="flex gap-1 align-center content-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
 
-                      <li className="text-xl bold">{child}</li>
+                          <li className="text-xl bold">{child}</li>
+                        </div>
+                      </ul>
                     </div>
-                  </ul>
-                </div>
-              ))}
+                  ))}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl">Second House Children</h2>
+                {addedChildren &&
+                  addedChildren.slice(7, 14).map((child) => (
+                    <div className="mt-4" key={child}>
+                      <ul>
+                        <div className="flex gap-1 align-center content-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+
+                          <li className="text-xl bold">{child}</li>
+                        </div>
+                      </ul>
+                    </div>
+                  ))}
+              </div>
+            </div>
             <button
+              type="button"
               className=" primary w-40 mt-4"
               onClick={() => setDisplay(true)}
             >
