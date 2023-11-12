@@ -7,7 +7,7 @@ router.get("/", FamilyController.hello);
 
 router.get("/grandparents", FamilyController.getGrandParents);
 
-router.post("/grandparents", FamilyController.addGrandParents);
+router.put("/grandparents", FamilyController.addGrandParents);
 
 router.get("/parents", FamilyController.getParents);
 

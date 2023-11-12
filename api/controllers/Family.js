@@ -8,18 +8,26 @@ exports.hello = (req, res) => {
 
 exports.getGrandParents = async (req, res) => {
   const GrandParents = await GrandParent.find();
-  res.json(GrandParents);
+  res.json(GrandParents[0]);
 };
 
 exports.addGrandParents = async (req, res) => {
-  const { name, firstWifeName, secondWifeName, children } = req.body;
-  GrandParent.create({ name, firstWifeName, secondWifeName, children })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      throw err;
-    });
+  const { name, firstWife, secondWife, addedChildren, addedPhotos } = req.body;
+
+  let grandPa = await GrandParent.findOne({
+    _id: "654f69d8baaba8e96d2d1f70",
+  });
+
+  if (grandPa) {
+    (grandPa.name = name),
+      (grandPa.firstWife = firstWife),
+      (grandPa.secondWife = secondWife),
+      (grandPa.children = addedChildren),
+      (grandPa.addedPhotos = addedPhotos);
+  }
+  await grandPa.save().then((response) => {
+    res.json(response);
+  });
 };
 
 exports.getParents = async (req, res) => {

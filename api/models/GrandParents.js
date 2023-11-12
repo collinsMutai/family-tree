@@ -3,9 +3,10 @@ const { Schema } = mongoose;
 
 const GrandParentsSchema = new Schema({
   name: { type: String, required: true },
-  firstWifeName: { type: String },
-  secondWifeName: { type: String},
-  children: { type: Array }
+  firstWife: { type: String },
+  secondWife: { type: String},
+  children: { type: Array },
+  addedPhotos: {type: Array}
   
 });
 
