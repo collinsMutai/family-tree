@@ -5,7 +5,8 @@ import "./App.css";
 import axios from "axios";
 import FamilyContextProvider from "./FamilyContext";
 
-axios.defaults.baseURL = "http://localhost:3000";
+// axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://family-tree-backend-evr9.onrender.com";
 
 
 axios.defaults.withCredentials = true;
