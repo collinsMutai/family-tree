@@ -21,11 +21,14 @@ app.use("/uploads", express.static(__dirname + "/uploads"))
 app.use(
   cors({
     credentials: true,
-    origin: "*",
+    origin: "https://family-tree-zqa1.onrender.com",
   })
 );
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://family-tree-zqa1.onrender.com"
+  );
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
