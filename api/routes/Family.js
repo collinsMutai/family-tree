@@ -17,4 +17,6 @@ router.get("/children", FamilyController.getChildren);
 
 router.post("/children", FamilyController.addChildren);
 
+router.post("/view-details", FamilyController.viewDetails)
+
 module.exports = router;

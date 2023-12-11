@@ -1,27 +1,35 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { FamilyContext } from "../FamilyContext";
+import { Link } from "react-router-dom";
+import ChildrenList from "../ChildrenList";
 
 const GrandParent = () => {
   const [display, setDisplay] = useState(false);
   const [name, setName] = useState("");
   const [firstWife, setFirstWife] = useState("");
   const [secondWife, setSecondWife] = useState("");
-  const [children, setChildren] = useState([]);
+
   const [photoLink, setPhotoLink] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
-  const [child, setChild] = useState("");
-  const [addedChildren, setAddedChildren] = useState([]);
+
+  const [firstWifeChild, setFirstWifeChild] = useState("");
+  const [secondWifeChild, setSecondWifeChild] = useState("");
+
+  const [firstWifeChildren, setFirstWifeChildren] = useState([]);
+  const [secondWifeChildren, setSecondWifeChildren] = useState([]);
 
   const { grandparent, setGrandparent } = useContext(FamilyContext);
 
   useEffect(() => {
     axios.get("/grandparents").then(({ data }) => {
+      console.log(data);
       setGrandparent(data);
       setName(data.name);
       setFirstWife(data.firstWife);
       setSecondWife(data.secondWife);
-      setAddedChildren(data.children);
+      setFirstWifeChildren(data.firstWifeChildren);
+      setSecondWifeChildren(data.secondWifeChildren);
       setAddedPhotos(data.addedPhotos);
     });
   }, []);
@@ -29,12 +37,13 @@ const GrandParent = () => {
   function addGrandparent(ev) {
     ev.preventDefault();
 
-    // setName(grandparent.name);
+    setName(grandparent.name);
     if (
       !grandparent.name ||
       !grandparent.firstWife ||
       !grandparent.secondWife ||
-      !grandparent.children ||
+      !grandparent.firstWifeChildren ||
+      !grandparent.secondWifeChildren ||
       !grandparent.addedPhotos
     ) {
       return;
@@ -43,7 +52,8 @@ const GrandParent = () => {
       name,
       firstWife,
       secondWife,
-      addedChildren,
+      firstWifeChildren,
+      secondWifeChildren,
       addedPhotos,
     });
     setDisplay(false);
@@ -61,34 +71,44 @@ const GrandParent = () => {
     });
     setPhotoLink("");
   }
-  async function handleAddChild(ev) {
+
+  async function handleFirstWifeAddChildren(ev) {
     ev.preventDefault();
 
-    setAddedChildren((prev) => {
-      return [...prev, child];
+    setFirstWifeChildren((prev) => {
+      return [...prev, firstWifeChild];
     });
-    setChild("");
+    setFirstWifeChild("");
   }
-    function uploadPhoto(ev) {
-      const files = ev.target.files;
-      // console.log(files);
-      const data = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        data.append("photos", files[i]);
-      }
 
-      axios
-        .post("/upload", data, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((response) => {
-         
-          const { data: filenames } = response;
-          setAddedPhotos((prev) => {
-            return [...prev, ...filenames];
-          });
-        });
+  async function handleSecondWifeAddChildren(ev) {
+    ev.preventDefault();
+
+    setSecondWifeChildren((prev) => {
+      return [...prev, secondWifeChild];
+    });
+    setSecondWifeChild("");
+  }
+
+  function uploadPhoto(ev) {
+    const files = ev.target.files;
+    
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append("photos", files[i]);
     }
+
+    axios
+      .post("/upload", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data: filenames } = response;
+        setAddedPhotos((prev) => {
+          return [...prev, ...filenames];
+        });
+      });
+  }
 
   return (
     <>
@@ -115,23 +135,45 @@ const GrandParent = () => {
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-6">
             <input
               type="text"
-              placeholder="Add child"
-              value={child}
-              onChange={(ev) => setChild(ev.target.value)}
+              placeholder="Add first wife children"
+              value={firstWifeChild}
+              onChange={(ev) => setFirstWifeChild(ev.target.value)}
             />
             <button
               className="bg-primary px-4 rounded-2xl"
-              onClick={handleAddChild}
+              onClick={handleFirstWifeAddChildren}
             >
-              Add child
+              Add
             </button>
           </div>
           <div className="mt-2 gap-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-            {addedChildren?.length > 0 &&
-              addedChildren.map((item) => (
+            {firstWifeChildren?.length > 0 &&
+              firstWifeChildren.map((item) => (
+                <div className="h-32 flex relative" key={item}>
+                  {item}
+                </div>
+              ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Add second wife child"
+              value={secondWifeChild}
+              onChange={(ev) => setSecondWifeChild(ev.target.value)}
+            />
+            <button
+              className="bg-primary px-4 rounded-2xl"
+              onClick={handleSecondWifeAddChildren}
+            >
+              Add
+            </button>
+          </div>
+          <div className="mt-2 gap-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {secondWifeChildren?.length > 0 &&
+              secondWifeChildren.map((item) => (
                 <div className="h-32 flex relative" key={item}>
                   {item}
                 </div>
@@ -185,17 +227,20 @@ const GrandParent = () => {
                 <div className="h-32 flex relative" key={link}>
                   <img
                     className="object-cover w-full rounded-2xl"
-                    src={
-                      "https://family-tree-backend-evr9.onrender.com/uploads/" +
-                      link
-                    }
+                    src={"http://localhost:3000/uploads/" + link}
                     alt=""
                   />
                 </div>
               ))}
           </div>
           <div className="flex justify-between">
-            <button className="primary my-4">Save</button>
+            <button
+              className="primary my-4"
+              type="submit"
+              onClick={addGrandparent}
+            >
+              Save
+            </button>
             <button
               onClick={() => setDisplay(false)}
               type="button"
@@ -206,17 +251,14 @@ const GrandParent = () => {
           </div>
         </form>
       )}
-      {grandparent && (
+      {!display && grandparent && (
         <div className=" mt-8 p-8">
           <h1 className="text-2xl bold mb-8">Grandparents: Kiptule Family</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={
-                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
-                  addedPhotos?.[0]
-                }
+                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
                 alt=""
               />
               <h2 className="text-xl bold">Grandpa: {name}</h2>
@@ -224,10 +266,7 @@ const GrandParent = () => {
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={
-                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
-                  addedPhotos?.[1]
-                }
+                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
                 alt=""
               />
 
@@ -236,10 +275,7 @@ const GrandParent = () => {
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={
-                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
-                  addedPhotos?.[2]
-                }
+                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
                 alt=""
               />
 
@@ -248,62 +284,26 @@ const GrandParent = () => {
           </div>
           <div className="mt-4">
             <p className="text-lg">
-              They were blessed with {addedChildren?.length} of children.
+              They were blessed with{" "}
+              {firstWifeChildren?.length + secondWifeChildren?.length} of
+              children.
             </p>
             <div className="flex mt-8">
               <div className="flex-1">
-                <h2 className="text-xl">First House Children</h2>
-                {addedChildren &&
-                  addedChildren.slice(0, 7).map((child) => (
+                <h2 className="text-xl">First Wife Children</h2>
+                {firstWifeChildren &&
+                  firstWifeChildren.map((child) => (
                     <div className="mt-4" key={child}>
-                      <ul>
-                        <div className="flex gap-1 align-center content-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-
-                          <li className="text-xl bold">{child}</li>
-                        </div>
-                      </ul>
+                      <ChildrenList child={child} />
                     </div>
                   ))}
               </div>
               <div className="flex-1">
-                <h2 className="text-xl">Second House Children</h2>
-                {addedChildren &&
-                  addedChildren.slice(7, 14).map((child) => (
+                <h2 className="text-xl">Second Wife Children</h2>
+                {secondWifeChildren &&
+                  secondWifeChildren.map((child) => (
                     <div className="mt-4" key={child}>
-                      <ul>
-                        <div className="flex gap-1 align-center content-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-
-                          <li className="text-xl bold">{child}</li>
-                        </div>
-                      </ul>
+                      <ChildrenList child={child} />
                     </div>
                   ))}
               </div>

@@ -6,7 +6,11 @@ const ParentsSchema = new Schema({
   name: { type: String, required: true },
   firstWifeName: { type: String },
   secondWifeName: { type: String },
-  children: { type: Array },
+  thirdWifeName: { type: String },
+  firstWifeChildren: { type: Array },
+  secondWifeChildren: { type: Array },
+  thirdWifeChildren: { type: Array },
+  husbandName: String
 });
 
 module.exports = mongoose.model("Parents", ParentsSchema);

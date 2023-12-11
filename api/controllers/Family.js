@@ -11,19 +11,39 @@ exports.getGrandParents = async (req, res) => {
   res.json(GrandParents[0]);
 };
 
+//  "children": [
+    // "Pot Jennifer - Senge",
+    // "Richard Soi - ptengecho",
+    // "Kenduiwo Arap Soi",
+    // "Pot Cherono - Senge Cheplanget",
+    // "Thomas Soi",
+    // "Mosonik Soi",
+    // "Teresia - Senge",
+    // "Kiptangus Arap Soi",
+    // "James Soi - Kiptuiya",
+    // "Taprantich",
+    // "Lucio",
+    // "Daniel Soi",
+    // "Joseph Soi",
+    // "Elijah Soi"
+//   ],
 exports.addGrandParents = async (req, res) => {
-  const { name, firstWife, secondWife, addedChildren, addedPhotos } = req.body;
-
-  let grandPa = await GrandParent.findOne({
-    _id: "654f69d8baaba8e96d2d1f70",
-  });
-
+  const {
+    name,
+    firstWife,
+    secondWife,
+    addedPhotos,
+    firstWifeChildren,
+    secondWifeChildren,
+  } = req.body;
+  let grandPa = await GrandParent.findOne();
   if (grandPa) {
     (grandPa.name = name),
       (grandPa.firstWife = firstWife),
       (grandPa.secondWife = secondWife),
-      (grandPa.children = addedChildren),
-      (grandPa.addedPhotos = addedPhotos);
+      (grandPa.addedPhotos = addedPhotos),
+      (grandPa.firstWifeChildren = firstWifeChildren),
+      (grandPa.secondWifeChildren = secondWifeChildren);
   }
   await grandPa.save().then((response) => {
     res.json(response);
@@ -36,13 +56,22 @@ exports.getParents = async (req, res) => {
 };
 
 exports.addParents = async (req, res) => {
-  const { name, firstWifeName, secondWifeName, children } = req.body;
+  const {
+    name,
+    firstWifeName,
+    secondWifeName,
+    firstWifeChildren,
+    secondWifeChildren,
+    thirdWifeChildren,
+  } = req.body;
   Parent.create({
     name,
     firstWifeName,
     secondWifeName,
-    children,
-    parentName: "654e36133a6e80be76309a99",
+    firstWifeChildren,
+    secondWifeChildren,
+    thirdWifeChildren,
+    parentName: "654f69d8baaba8e96d2d1f70",
   })
     .then((doc) => {
       res.json(doc);
@@ -78,4 +107,11 @@ exports.addChildren = async (req, res) => {
     .catch((err) => {
       throw err;
     });
+};
+
+exports.viewDetails = async (req, res) => {
+  const { info } = req.body;
+  const parentDoc = await Parent.findOne({ name: info });
+  if (!parentDoc) throw err;
+  res.json(parentDoc);
 };
