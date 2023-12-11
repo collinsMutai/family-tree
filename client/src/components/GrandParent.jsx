@@ -23,7 +23,7 @@ const GrandParent = () => {
 
   useEffect(() => {
     axios.get("/grandparents").then(({ data }) => {
-      console.log(data);
+     
       setGrandparent(data);
       setName(data.name);
       setFirstWife(data.firstWife);
@@ -227,7 +227,10 @@ const GrandParent = () => {
                 <div className="h-32 flex relative" key={link}>
                   <img
                     className="object-cover w-full rounded-2xl"
-                    src={"http://localhost:3000/uploads/" + link}
+                    src={
+                      "https://family-tree-backend-evr9.onrender.com/uploads/" +
+                      link
+                    }
                     alt=""
                   />
                 </div>
@@ -258,7 +261,10 @@ const GrandParent = () => {
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
+                src={
+                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
+                  addedPhotos?.[0]
+                }
                 alt=""
               />
               <h2 className="text-xl bold">Grandpa: {name}</h2>
@@ -266,7 +272,10 @@ const GrandParent = () => {
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
+                src={
+                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
+                  addedPhotos?.[0]
+                }
                 alt=""
               />
 
@@ -275,7 +284,10 @@ const GrandParent = () => {
             <div>
               <img
                 className="rounded-2xl w-80 mb-4"
-                src={"http://localhost:3000/uploads/" + addedPhotos?.[0]}
+                src={
+                  "https://family-tree-backend-evr9.onrender.com/uploads/" +
+                  addedPhotos?.[0]
+                }
                 alt=""
               />
 
